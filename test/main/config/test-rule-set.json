@@ -1,0 +1,29 @@
+{
+    "name": "Example Rule Set",
+    "description": "This rule set shows all the various features that can be included in a rule set",
+    "scanners": [
+        { "name": "approval-process-scanner" },
+        {
+            "name": "flow-scanner",
+            "include": [
+                {
+                    "name": "SkipProcessBuilderRule",
+                    "skipAutomation": "different value to be included",
+                    "severity": 5,
+                    "errorMessage": "You should include this...",
+                    "ignore": "force-app/main/default/flows/myFlow.flow-meta.xml"
+                },
+                { "name": "FlowDeactivatedRule" }
+            ],
+            "ignore": [
+                "force-app/main/default/flows/myFlow.flow-meta.xml"
+            ]
+        },
+        {
+            "name": "any-file-scanner",
+            "exclude": [
+                "ContainsIdRule"
+            ]
+        }
+    ]
+}

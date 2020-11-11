@@ -1,0 +1,16 @@
+{
+    "name": "Example Rule Set (All)",
+    "description": "This rule set shows all the scanners as enabled",
+    "scanners": [
+        { "name": "any-file-scanner" },
+        { "name": "approval-process-scanner" },
+        { "name": "duplicate-rule-scanner" },
+        { "name": "flow-scanner" },
+        { "name": "field-scanner" },
+        { "name": "object-scanner" },
+        { "name": "permission-set-scanner" },
+        { "name": "quick-action-scanner" },
+        { "name": "validation-rule-scanner" },
+        { "name": "workflow-scanner" }
+    ]
+}

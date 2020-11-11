@@ -1,0 +1,7 @@
+{
+  "commandDescription": "This utility will scan salesforce metadata (in source format) to identify any potential issues, this can be built into CI pipelines to ensure work admins are checking in is up to standard",
+  "resultsFileDescription": "The path to the file that the results should be written to",
+  "ruleSetFileDescription": "The file path for the rule set that should be applied",
+  "targetDirectoryDescription": "The directory that should be targeted whilst scanning the files",
+  "errorLevelDescription": "The level at which the severty should raise an error, otherwise the results will be logged silently. Numbers range between 1-5, where 1 is Minor and 5 is Extreme"
+}

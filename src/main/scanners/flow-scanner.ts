@@ -23,11 +23,11 @@ abstract class ProcessBuilderRule extends Rule {
         return flowContents.includes('<processType>Workflow</processType>');
     }
 
-    public scan(metadata: MetadataFile): Violation[] {
+    public scanOverride(metadata: MetadataFile): Violation[] {
         if (!ProcessBuilderRule.isProcessBuilder(metadata.getContents())) {
             return [];
         }
-        return super.scan(metadata);
+        return super.scanOverride(metadata);
     }
 }
 

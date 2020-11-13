@@ -9,10 +9,14 @@ export abstract class Rule {
     private enabled: boolean = true;
     private ignoredFiles: Set<string>;
 
+    // This method should not be overridden as it contains validation, the method below can be
     public scan(metadata: MetadataFile): Violation[] {
         if (this.ignoredFiles.has(metadata.getPath()) || !this.enabled) {
             return [];
         }
+        return this.scanOverride(metadata);
+    }
+    protected scanOverride(metadata: MetadataFile): Violation[] {
         if (this.isViolated(metadata)) {
             return [this.createViolation()];
         }

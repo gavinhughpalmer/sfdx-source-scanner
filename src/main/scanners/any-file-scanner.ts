@@ -18,7 +18,13 @@ class IsValidXMLRule extends Rule {
     protected severity = Severity.EXTREME;
     protected errorMessage = 'The XML file is not formatted correctly, this will not be deployed successfully';
     public isViolated(metadata: MetadataFile): boolean {
-        return validateXML(metadata.getContents()) !== true;
+        const xmlValidationResult = validateXML(metadata.getContents());
+        // TODO consider having a raise validation method on the parent class, then we are running the scan method, because at the moment the isViolated method has side effects
+        if (xmlValidationResult !== true) {
+            this.lineNumber = xmlValidationResult.err.line;
+            this.violationLine = xmlValidationResult.err.msg;
+        }
+        return xmlValidationResult !== true;
     }
 }
 

@@ -16,8 +16,8 @@ export default class FieldScanner extends MetadataScanner {
 }
 
 class ExcludeStandardFieldsRule extends Rule {
-    protected severity = Severity.LOW;
-    protected errorMessage = 'Please consider removing standard fields from source control, they can often cause problems';
+    public severity = Severity.LOW;
+    public errorMessage = 'Please consider removing standard fields from source control, they can often cause problems';
     protected isViolated(metadata: Metadata): boolean {
         return !metadata.getPath().endsWith('__c.field-meta.xml');
     }

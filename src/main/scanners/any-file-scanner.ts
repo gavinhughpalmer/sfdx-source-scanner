@@ -16,8 +16,8 @@ export default class AnyFileScanner extends MetadataScanner {
 }
 
 class IsValidXMLRule extends Rule {
-    protected severity = Severity.EXTREME;
-    protected errorMessage = 'The XML file is not formatted correctly, this will not be deployed successfully';
+    public severity = Severity.EXTREME;
+    public errorMessage = 'The XML file is not formatted correctly, this will not be deployed successfully';
     protected isViolated(metadata: Metadata): boolean {
         const xmlValidationResult = validateXML(metadata.getRawContents());
         // TODO consider having a raise validation method on the parent class, then we are running the scan method, because at the moment the isViolated method has side effects
@@ -31,8 +31,8 @@ class IsValidXMLRule extends Rule {
 
 // This may provide false positives, but this is defined as a low priority for this reason
 class ContainsIdRule extends Rule {
-    protected severity = Severity.LOW;
-    protected errorMessage = 'A potential Id has been identified in this file, consider removing the hardcoded refrence';
+    public severity = Severity.LOW;
+    public errorMessage = 'A potential Id has been identified in this file, consider removing the hardcoded refrence';
     protected isViolated(metadata: Metadata): boolean {
         const idMatches = metadata.getRawContents().match(/[^0-9a-zA-Z<]([0-9a-zA-Z]{18})[^0-9a-zA-Z>]/);
         if (idMatches) {
@@ -44,8 +44,8 @@ class ContainsIdRule extends Rule {
 }
 
 class ContainsUnresolvedConflictsRule extends Rule {
-    protected severity = Severity.EXTREME;
-    protected errorMessage = 'An unresolved merge conflict has been identified, please resolve before proceeding';
+    public severity = Severity.EXTREME;
+    public errorMessage = 'An unresolved merge conflict has been identified, please resolve before proceeding';
     protected isViolated(metadata: Metadata): boolean {
         return metadata.getRawContents().includes('<<<<<<<');
     }

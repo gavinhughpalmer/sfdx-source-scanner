@@ -3,8 +3,8 @@ import { Metadata } from './metadata-scanner';
 import { Rule } from './rule';
 
 export class IncludesDescriptionRule extends Rule {
-    protected severity = Severity.MODERATE;
-    protected errorMessage = 'The metadata does not include a description';
+    public severity = Severity.MODERATE;
+    public errorMessage = 'The metadata does not include a description';
     protected isViolated(metadata: Metadata): boolean {
         let isViolated = false;
         const desctiptionMatch = metadata.getRawContents().match(/<description>[^]*<\/description>/);
@@ -17,8 +17,8 @@ export class IncludesDescriptionRule extends Rule {
 
 // TODO Similar rule for IF(something, true, false)
 export class IncludesEqualsBooleanRule extends Rule {
-    protected severity = Severity.MINOR;
-    protected errorMessage = 'The formula contains a comparison of a checkbox (boolean) to the keyword true or false, this is unnessisary as the boolean itself can be used';
+    public severity = Severity.MINOR;
+    public errorMessage = 'The formula contains a comparison of a checkbox (boolean) to the keyword true or false, this is unnessisary as the boolean itself can be used';
     private surroundingText: string;
 
     public constructor(surroundingText?: string) {
@@ -46,9 +46,9 @@ export class IncludesEqualsBooleanRule extends Rule {
 
 // TODO could check for where the line is entered (ie it should sit at the top)
 export class SkipAutomationRule extends Rule {
-    protected severity = Severity.MODERATE;
+    public severity = Severity.MODERATE;
+    public errorMessage: string;
     protected skipAutomation: string;
-    protected errorMessage: string;
     public constructor(skipAutomation: string) {
         super();
         this.skipAutomation = skipAutomation;
@@ -60,9 +60,9 @@ export class SkipAutomationRule extends Rule {
 }
 
 export class DeactivatedMetadataRule extends Rule {
-    protected severity = Severity.MODERATE;
+    public severity = Severity.MODERATE;
+    public errorMessage = 'Deactivated metadata should not be included in source control, please consider removing from the source';
     protected activeFlag: string;
-    protected errorMessage = 'Deactivated metadata should not be included in source control, please consider removing from the source';
     public constructor(activeFlag: string) {
         super();
         this.activeFlag = activeFlag;
@@ -73,8 +73,8 @@ export class DeactivatedMetadataRule extends Rule {
 }
 
 export class NamingConventionRule extends Rule {
-    protected severity = Severity.HIGH;
-    protected errorMessage = 'The name of the metadata object does not match the suggested convention';
+    public severity = Severity.HIGH;
+    public errorMessage = 'The name of the metadata object does not match the suggested convention';
     protected namingPattern: RegExp;
 
     public constructor(namingPattern: RegExp) {

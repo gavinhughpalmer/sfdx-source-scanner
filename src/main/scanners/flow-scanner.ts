@@ -33,16 +33,16 @@ abstract class ProcessBuilderRule extends Rule {
 }
 
 class ProcessBuilderNamingRule extends ProcessBuilderRule {
-    protected severity = Severity.MODERATE;
-    protected errorMessage = 'The process builder does not follow the naming convention';
+    public severity = Severity.MODERATE;
+    public errorMessage = 'The process builder does not follow the naming convention';
     protected isViolated(metadata: Metadata): boolean {
         return !metadata.getPath().includes('_Handler');
     }
 }
 
 class SingleProcessBuilderPerObjectRule extends ProcessBuilderRule {
-    protected severity = Severity.HIGH;
-    protected errorMessage = 'There are multiple process builders for the objet';
+    public severity = Severity.HIGH;
+    public errorMessage = 'There are multiple process builders for the objet';
     private processBuilderObjects = new Set();
     protected isViolated(metadata: Metadata): boolean {
         const matches = metadata.getRawContents().match(/<name>ObjectType<\/name>\s*<value>\s*<stringValue>(\w*)<\/stringValue>/);

@@ -43,6 +43,10 @@ export abstract class MetadataScanner {
         this.ignoredFiles = ignoredFiles;
     }
 
+    public getRule(ruleName: string): Rule {
+        return this.rulesMap.get(ruleName);
+    }
+
     protected scanMetadata(rule: Rule, metadata: Metadata): void {
         for (const violation of rule.scan(metadata)) {
             this.raiseAlert(metadata, violation);
@@ -56,10 +60,6 @@ export abstract class MetadataScanner {
 
     protected addRule(ruleToAdd: Rule): void {
         this.rulesMap.set(ruleToAdd.constructor.name, ruleToAdd);
-    }
-
-    public getRule(ruleName: string): Rule {
-        return this.rulesMap.get(ruleName);
     }
 }
 

@@ -39,11 +39,22 @@ export class RuleSetManager {
         }
         if (scannerConfig.include) {
             for (const includedRule of scannerConfig.include) {
-                scannerInstance.includeRule(includedRule);
+                this.enableRule(scannerInstance, includedRule);
             }
         }
-        // TODO set each of the rules on the classes with their attributes
         return scannerInstance;
+    }
+
+    private enableRule(scannerInstance: MetadataScanner, includedRule: RuleConfig): void {
+        scannerInstance.includeRule(includedRule.name);
+        const rule = scannerInstance.getRule(includedRule.name);
+        rule.severity = includedRule.severity || rule.severity;
+        rule.errorMessage = includedRule.errorMessage || rule.errorMessage;
+        if (includedRule.properties) {
+            for (const property of includedRule.properties) {
+                rule[property.name] = property.value;
+            }
+        }
     }
 }
 
@@ -66,4 +77,10 @@ interface RuleConfig {
     severity?: number;
     errorMessage?: string;
     ignore?: string[];
+    properties?: RuleProperty[];
+}
+
+interface RuleProperty {
+    name: string;
+    value: string | number;
 }

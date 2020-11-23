@@ -1,26 +1,20 @@
 import { Severity } from './file-alert';
-import { MetadataFile } from './metadata-scanner';
+import { Metadata } from './metadata-scanner';
 
 export abstract class Rule {
-    protected severity: Severity;
-    protected errorMessage: string;
+    public severity: Severity;
+    public errorMessage: string;
     protected lineNumber: number;
     protected violationLine: string;
     private enabled: boolean = true;
-    private ignoredFiles: Set<string>;
+    private ignoredFiles: Set<string> = new Set();
 
     // This method should not be overridden as it contains validation, the method below can be
-    public scan(metadata: MetadataFile): Violation[] {
+    public scan(metadata: Metadata): Violation[] {
         if (this.ignoredFiles.has(metadata.getPath()) || !this.enabled) {
             return [];
         }
         return this.scanOverride(metadata);
-    }
-    protected scanOverride(metadata: MetadataFile): Violation[] {
-        if (this.isViolated(metadata)) {
-            return [this.createViolation()];
-        }
-        return [];
     }
     public ignoreFiles(ignoredFiles: string[]) {
         this.ignoredFiles = new Set(ignoredFiles);
@@ -31,9 +25,13 @@ export abstract class Rule {
     public disable(): void {
         this.enabled = false;
     }
-    protected isViolated(metadata: MetadataFile): boolean {
-        return false;
+    protected scanOverride(metadata: Metadata): Violation[] {
+        if (this.isViolated(metadata)) {
+            return [this.createViolation()];
+        }
+        return [];
     }
+    protected abstract isViolated(metadata: Metadata): boolean;
     protected createViolation(): Violation {
         return {
             lineNumber: this.lineNumber,

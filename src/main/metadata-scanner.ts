@@ -1,13 +1,15 @@
 import * as glob from 'fast-glob';
+import { parse as parseXml } from 'fast-xml-parser';
 import * as fs from 'fs';
 import { FileAlert } from './file-alert';
-import { Rule } from './rule';
+import { Rule, Violation } from './rule';
 
-export class MetadataScanner {
+export abstract class MetadataScanner {
     protected metadataFilePattern: string;
     protected rules: Rule[];
     private rulesMap: Map<string, Rule> = new Map();
     private ignoredFiles: string[];
+    private alerts: FileAlert[] = [];
 
     private baseDir: string;
 
@@ -20,18 +22,13 @@ export class MetadataScanner {
     }
 
     public async run(): Promise<FileAlert[]> {
-        const alerts: FileAlert[] = [];
-        for (const metadataPath of await glob([this.getMetadataFilePattern()])) {
-            const metadataFile = new MetadataFile(metadataPath);
+        for (const metadataPath of await glob(this.getMetadataFilePattern(), { ignore: this.ignoredFiles })) {
+            const metadataFile = new Metadata(metadataPath);
             for (const rule of this.rulesMap.values()) {
-                rule.ignoreFiles(this.ignoredFiles);
-                for (const violation of rule.scan(metadataFile)) {
-                    violation['filePath'] = metadataPath;
-                    alerts.push(violation as FileAlert);
-                }
+                this.scanMetadata(rule, metadataFile);
             }
         }
-        return alerts;
+        return this.alerts;
     }
 
     public excludeRule(ruleName: string): void {
@@ -39,7 +36,6 @@ export class MetadataScanner {
     }
 
     public includeRule(ruleName: string): void {
-        // how to ensure others are disabled here?
         this.rulesMap.get(ruleName).enable();
     }
 
@@ -47,32 +43,60 @@ export class MetadataScanner {
         this.ignoredFiles = ignoredFiles;
     }
 
+    protected scanMetadata(rule: Rule, metadata: Metadata): void {
+        for (const violation of rule.scan(metadata)) {
+            this.raiseAlert(metadata, violation);
+        }
+    }
+
+    protected raiseAlert(metadata: Metadata, violation: Violation): void {
+        violation['filePath'] = metadata.getPath();
+        this.alerts.push(violation as FileAlert);
+    }
+
     protected addRule(ruleToAdd: Rule): void {
         this.rulesMap.set(ruleToAdd.constructor.name, ruleToAdd);
     }
+
+    public getRule(ruleName: string): Rule {
+        return this.rulesMap.get(ruleName);
+    }
 }
 
-export class MetadataFile {
+export class Metadata {
 
-    private metadataPath: string;
-    private metadataContents: string;
+    protected metadataFilePath: string;
+    protected metadataContents: string;
+    protected parsedMetadata: object;
 
-    constructor(metadataPath: string) {
-        this.metadataPath = metadataPath;
+    constructor(metadataFilePath: string) {
+        this.metadataFilePath = metadataFilePath;
     }
 
     public getPath(): string {
-        return this.metadataPath;
+        return this.metadataFilePath;
     }
 
-    public getContents() {
+    public getRawContents(): string {
+        if (!fs.existsSync(this.metadataFilePath)) {
+            throw new MetadataError(`The file path ${this.metadataFilePath} does not exist`);
+        }
         if (!this.metadataContents) {
-            this.metadataContents = fs.readFileSync(this.metadataPath, 'utf8');
+            this.metadataContents = fs.readFileSync(this.metadataFilePath, 'utf8');
         }
         return this.metadataContents;
     }
 
-    public isManagedMetadata() {
-        return this.metadataPath.match(/[\w\d]+__[\w\d]+__c.\w+-meta\.xml/);
+    public getParsedContents(): object {
+        if (!this.parsedMetadata) {
+            this.parsedMetadata = parseXml(this.getRawContents());
+        }
+        return this.parsedMetadata;
+    }
+
+    public isManagedMetadata(): boolean {
+        return !!this.metadataFilePath.match(/[\w\d]+__[\w\d]+__c.\w+-meta\.xml/);
     }
 }
+
+export class MetadataError extends Error {}

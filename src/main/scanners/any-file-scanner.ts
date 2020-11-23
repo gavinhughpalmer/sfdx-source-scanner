@@ -1,8 +1,9 @@
 import { validate as validateXML } from 'fast-xml-parser';
 import { Severity } from '../file-alert';
-import { MetadataFile, MetadataScanner } from '../metadata-scanner';
+import { Metadata, MetadataScanner } from '../metadata-scanner';
 import { Rule } from '../rule';
 
+// TODO Should each of these scanner classes be extending the metadata scanner or just accepting input as a constructor?
 export default class AnyFileScanner extends MetadataScanner {
 
     protected metadataFilePattern = '*.xml';
@@ -17,8 +18,8 @@ export default class AnyFileScanner extends MetadataScanner {
 class IsValidXMLRule extends Rule {
     protected severity = Severity.EXTREME;
     protected errorMessage = 'The XML file is not formatted correctly, this will not be deployed successfully';
-    public isViolated(metadata: MetadataFile): boolean {
-        const xmlValidationResult = validateXML(metadata.getContents());
+    protected isViolated(metadata: Metadata): boolean {
+        const xmlValidationResult = validateXML(metadata.getRawContents());
         // TODO consider having a raise validation method on the parent class, then we are running the scan method, because at the moment the isViolated method has side effects
         if (xmlValidationResult !== true) {
             this.lineNumber = xmlValidationResult.err.line;
@@ -32,8 +33,8 @@ class IsValidXMLRule extends Rule {
 class ContainsIdRule extends Rule {
     protected severity = Severity.LOW;
     protected errorMessage = 'A potential Id has been identified in this file, consider removing the hardcoded refrence';
-    public isViolated(metadata: MetadataFile): boolean {
-        const idMatches = metadata.getContents().match(/[^0-9a-zA-Z<]([0-9a-zA-Z]{18})[^0-9a-zA-Z>]/);
+    protected isViolated(metadata: Metadata): boolean {
+        const idMatches = metadata.getRawContents().match(/[^0-9a-zA-Z<]([0-9a-zA-Z]{18})[^0-9a-zA-Z>]/);
         if (idMatches) {
             const potentialId = idMatches[1];
             return /\d/.test(potentialId);
@@ -45,7 +46,7 @@ class ContainsIdRule extends Rule {
 class ContainsUnresolvedConflictsRule extends Rule {
     protected severity = Severity.EXTREME;
     protected errorMessage = 'An unresolved merge conflict has been identified, please resolve before proceeding';
-    public isViolated(metadata: MetadataFile): boolean {
-        return metadata.getContents().includes('<<<<<<<');
+    protected isViolated(metadata: Metadata): boolean {
+        return metadata.getRawContents().includes('<<<<<<<');
     }
 }

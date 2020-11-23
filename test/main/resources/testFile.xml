@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestObject>
+    <field1>Value 1</field1>
+    <field2>Test file contents</field2>
+</TestObject>

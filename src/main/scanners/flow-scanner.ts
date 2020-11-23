@@ -1,7 +1,7 @@
 import { Severity } from '../file-alert';
-import { MetadataFile, MetadataScanner } from '../metadata-scanner';
+import { Metadata, MetadataScanner } from '../metadata-scanner';
 import { Rule, Violation } from '../rule';
-import { DeactivatedMetadataRule, IncludesDescriptionRule, IncludesEqualsBooleanRule, SkipAutomationRule } from '../rules';
+import { DeactivatedMetadataRule, IncludesDescriptionRule, IncludesEqualsBooleanRule, NamingConventionRule, SkipAutomationRule } from '../rules';
 
 export default class FlowScanner extends MetadataScanner {
 
@@ -14,6 +14,7 @@ export default class FlowScanner extends MetadataScanner {
         this.addRule(new IncludesEqualsBooleanRule('<formulas>[^]+<expression>{innerText}<\/expression>[^]+<\/formulas>'));
         this.addRule(new SkipProcessBuilderRule());
         this.addRule(new DeactivatedMetadataRule('<status>Active</status>'));
+        this.addRule(new NamingConventionRule(/[A-Z][a-zA-Z0-9_]*_Handler/));
     }
 }
 
@@ -23,8 +24,8 @@ abstract class ProcessBuilderRule extends Rule {
         return flowContents.includes('<processType>Workflow</processType>');
     }
 
-    public scanOverride(metadata: MetadataFile): Violation[] {
-        if (!ProcessBuilderRule.isProcessBuilder(metadata.getContents())) {
+    public scanOverride(metadata: Metadata): Violation[] {
+        if (!ProcessBuilderRule.isProcessBuilder(metadata.getRawContents())) {
             return [];
         }
         return super.scanOverride(metadata);
@@ -34,7 +35,7 @@ abstract class ProcessBuilderRule extends Rule {
 class ProcessBuilderNamingRule extends ProcessBuilderRule {
     protected severity = Severity.MODERATE;
     protected errorMessage = 'The process builder does not follow the naming convention';
-    public isViolated(metadata: MetadataFile): boolean {
+    protected isViolated(metadata: Metadata): boolean {
         return !metadata.getPath().includes('_Handler');
     }
 }
@@ -43,8 +44,8 @@ class SingleProcessBuilderPerObjectRule extends ProcessBuilderRule {
     protected severity = Severity.HIGH;
     protected errorMessage = 'There are multiple process builders for the objet';
     private processBuilderObjects = new Set();
-    public isViolated(metadata: MetadataFile): boolean {
-        const matches = metadata.getContents().match(/<name>ObjectType<\/name>\s*<value>\s*<stringValue>(\w*)<\/stringValue>/);
+    protected isViolated(metadata: Metadata): boolean {
+        const matches = metadata.getRawContents().match(/<name>ObjectType<\/name>\s*<value>\s*<stringValue>(\w*)<\/stringValue>/);
         if (matches && matches[1]) {
             const objectName = matches[1].toLowerCase();
             const alreadyHasProcessBuilder = this.processBuilderObjects.has(objectName);
@@ -59,8 +60,8 @@ class SkipProcessBuilderRule extends SkipAutomationRule {
     public constructor() {
         super('$Setup.Configuration__c.Are_Processes_Off__c');
     }
-    public isViolated(metadata: MetadataFile): boolean {
-        return ProcessBuilderRule.isProcessBuilder(metadata.getContents()) && super.isViolated(metadata);
+    protected isViolated(metadata: Metadata): boolean {
+        return ProcessBuilderRule.isProcessBuilder(metadata.getRawContents()) && super.isViolated(metadata);
     }
 }
 

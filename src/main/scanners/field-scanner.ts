@@ -1,7 +1,7 @@
 import { Severity } from '../file-alert';
-import { MetadataFile, MetadataScanner } from '../metadata-scanner';
+import { Metadata, MetadataScanner } from '../metadata-scanner';
 import { Rule } from '../rule';
-import { IncludesDescriptionRule, IncludesEqualsBooleanRule } from '../rules';
+import { IncludesDescriptionRule, IncludesEqualsBooleanRule, NamingConventionRule } from '../rules';
 
 export default class FieldScanner extends MetadataScanner {
 
@@ -11,13 +11,14 @@ export default class FieldScanner extends MetadataScanner {
         this.addRule(new IncludesDescriptionRule());
         this.addRule(new IncludesEqualsBooleanRule());
         this.addRule(new ExcludeStandardFieldsRule());
+        this.addRule(new NamingConventionRule(/[A-Z][a-zA-Z0-9_]*/));
     }
 }
 
 class ExcludeStandardFieldsRule extends Rule {
     protected severity = Severity.LOW;
     protected errorMessage = 'Please consider removing standard fields from source control, they can often cause problems';
-    public isViolated(metadata: MetadataFile): boolean {
+    protected isViolated(metadata: Metadata): boolean {
         return !metadata.getPath().endsWith('__c.field-meta.xml');
     }
 }

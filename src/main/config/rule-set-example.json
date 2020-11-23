@@ -8,10 +8,12 @@
             "include": [
                 {
                     "name": "SkipProcessBuilderRule",
-                    "skipAutomation": "different value to be included",
                     "severity": 5,
                     "errorMessage": "You should include this...",
-                    "ignore": "force-app/main/default/flows/myFlow.flow-meta.xml"
+                    "ignore": "force-app/main/default/flows/myFlow.flow-meta.xml",
+                    "properties": [
+                        { "name": "skipAutomation", "value": "different value to be included", }
+                    ]
                 },
                 { "name": "FlowDeactivatedRule" }
             ],

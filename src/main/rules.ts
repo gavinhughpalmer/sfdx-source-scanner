@@ -90,6 +90,5 @@ export class NamingConventionRule extends Rule {
 }
 
 // TODO include rules for checking plain text passwords in named credentials
-// TODO Naming convention rules
 // TODO Add templates for creating new plugins and scanners using the https://github.com/jondot/hygen and npx (as in browserforce)
 // TODO A feature for resolving issues that it can, eg boolean equalities can be fixed easily

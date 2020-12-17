@@ -2,6 +2,7 @@ sfdx-source-scanner
 =========================
 
 **This product is in beta, please use with caution. Any feedback on the functionality or contributions are welcomed.**
+
 The source scanner will run static analysis on Salesforce source to ensure both best practices and potential errors are avoided. The scanner is configurable, this will allow you to define the rules that are executed, any files that you wish to ignore rules on, the severity of each rule and any specific error messages that should be output when a rule is violated.
 
 [![Version](https://img.shields.io/npm/v/sfdx-source-scanner.svg)](https://npmjs.org/package/sfdx-source-scanner)
@@ -63,7 +64,7 @@ This utility will scan salesforce metadata (in source format) to identify any po
 
 ```
 USAGE
-  $ sfdx scanner:source:scan -s <string> [-r <string>] [-d <string>] [-e <number>] [--json] [--loglevel 
+  $ sfdx scanner:source:scan -s <string> [-r <string>] [-d <string>] [-e <number>] [--json] [--loglevel
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS

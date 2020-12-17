@@ -62,7 +62,7 @@ This utility will scan salesforce metadata (in source format) to identify any po
 
 ```
 USAGE
-  $ sfdx scanner:source:scan -s <string> [-r <string>] [-d <string>] [-e <number>] [--json] [--loglevel 
+  $ sfdx scanner:source:scan -s <string> [-r <string>] [-d <string>] [-e <number>] [--json] [--loglevel
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
@@ -96,7 +96,42 @@ _See code: [lib/commands/scanner/source/scan.js](https://github.com/gavinhughpal
 <!-- commandsstop -->
 
 # Rule Sets
-<!-- Configurable items, setting the priotities, error messages, and other configurable items, ignoring files, including or excluding rules -->
+A ruleset will be required to be specified for any project that plans to use the source scanner, this can be provided into the CLI using the `--rulesetfile` argument. An example of all the various parameters that can be provided into the scanner can be found at [example rule set](/src/main/config/examples/rule-set-example.json).
+
+The ruleset is defined as a json file, where the top level elements define,
+1. name - this specifies the name assigned to the ruleset.
+2. description - This can be used for documentation on the ruleset that is defined
+3. scanners - this provdes a list of objects for each scanner that can be included, more details on the object and the fields that can be provided is described below.
+
+Scanner objects, the scanner objects define the scanners that should be running when the scanner is executed. Anything that is not included in the list will not be executed. The scanner consists of 4 fields, name, include, exclude and ignore.
+
+## name
+The name describes the name of the scanner to be included, this can be found below (it is the name of the js module), the list is provided below in the [Rule Refrence](#rule-refrence).
+
+## include
+The include accepts an array of objects that describes the rules that should be included, details of what should be provided in here is described below.
+The fields under include are name, severity, errorMessage, ignore and properties
+
+### name
+The name is provided as a string which contains the rule refrence (ie the class name of the rule being applied).
+
+### severity
+The severity argument will override the severity defined at the class level. This can work in conjunction with the errorlevel argument that gets passed into the CLI to determine what will throw an error when the command is executing.
+
+### errorMessage
+The errorMessage argument will override the error message that is provided in the default class implementaton.
+
+### ignore
+The ignore parameter will accept a list of file paths which are to be ignored for the current rule execution. Only the full path will be accepted.
+
+### properties
+The properties parameter will accept an object to allow for overriding of other parameters in the specific rule. This will accept a name, which is the parameter name in the class, the value will provide the value that should be accepted in this parameter.
+
+## exclude
+This parameter accepts an array of rule names (as strings) to exclude from the scanning execution. The name of the rule is defined as the class name that is used in the execution. These are specified below.
+
+## ignore
+This parameter accepts an array of file path strings, the file path provided will then be ignored in the scanning execution for the scanner it sits within. This applies for the full scanner level, an additional ignore level can be provided at the rule level. The full path must be provided here, no wildcard paths or partial paths can be entered.
 
 <!-- Can we autogenerate the rule refrence? -->
 # Rule Refrence

@@ -133,7 +133,7 @@ This parameter accepts an array of rule names (as strings) to exclude from the s
 ## ignore
 This parameter accepts an array of file path strings, the file path provided will then be ignored in the scanning execution for the scanner it sits within. This applies for the full scanner level, an additional ignore level can be provided at the rule level. The full path must be provided here, no wildcard paths or partial paths can be entered.
 
-<!-- Can we autogenerate the rule refrence? -->
+<!-- TODO Can we autogenerate the rule refrence, this could be done with a documentor in the classes -->
 # Rule Refrence
 The rules are executed by a number of scanners, each scanner is defined for a set of files (based of a file name pattern, mostly the extension for that file), within each scanner a number of rules are defined. A few of the rules are reused across a number of scanners. Below we will go into the detail for each of the scanners and the rules that are available for each.
 

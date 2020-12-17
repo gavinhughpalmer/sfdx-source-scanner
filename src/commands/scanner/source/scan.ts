@@ -10,7 +10,7 @@ export default class Scan extends SfdxCommand {
     public static description = messages.getMessage('commandDescription');
 
     public static examples = [
-        `$ sfdx config:scan --targetdir force-app --errorlevel 2
+        `$ sfdx config:scan --rulesetfile sfdx-config-rule-set.json --targetdir force-app --errorlevel 2
     Errors in the files have been identified
   `
     ];

@@ -48,9 +48,9 @@ export default class Scan extends SfdxCommand {
         const ruleSetManager = await RuleSetManager.getRuleSet(this.flags.rulesetfile as string);
         let fileViolations = await ruleSetManager.runRuleSet(targetDir);
         fileViolations = this.flatten(fileViolations);
-        const violationErrors = fileViolations.filter((violation) => violation.severity >= errorLevel);
+        const violationErrors = fileViolations.filter(violation => violation.severity >= errorLevel);
         if (!!violationErrors) {
-            violationErrors.forEach((violation) => this.ux.error(violation));
+            violationErrors.forEach(violation => this.ux.error(violation));
             throw new SfdxError('Errors in the files have been identified');
         }
         if (this.flags.resultsfile) {

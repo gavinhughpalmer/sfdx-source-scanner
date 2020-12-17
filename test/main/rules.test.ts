@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import * as rules from '../../src/main/rules';
-import { MetadataMock } from "./mocks";
+import { MetadataMock } from './mocks';
 
 describe('IncludesDescriptionRule', () => {
     let mockFile: MetadataMock;

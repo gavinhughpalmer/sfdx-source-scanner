@@ -2,7 +2,6 @@ import { MetadataScanner } from '../metadata-scanner';
 import { IncludesDescriptionRule, NamingConventionRule } from '../rules';
 
 export default class ObjectScanner extends MetadataScanner {
-
     protected metadataFilePattern = '*__c.object-meta.xml';
     public constructor(baseDir: string) {
         super(baseDir);

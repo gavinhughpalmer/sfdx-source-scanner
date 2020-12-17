@@ -37,7 +37,7 @@ export abstract class Rule {
             lineNumber: this.lineNumber,
             errorMessage: this.errorMessage,
             severity: this.severity,
-            violationLine: this.violationLine
+            violationLine: this.violationLine,
         };
     }
 }

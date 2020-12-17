@@ -4,7 +4,6 @@ import { Rule } from '../rule';
 import { IncludesDescriptionRule, IncludesEqualsBooleanRule, NamingConventionRule } from '../rules';
 
 export default class FieldScanner extends MetadataScanner {
-
     protected metadataFilePattern = '*.field-meta.xml';
     public constructor(baseDir: string) {
         super(baseDir);

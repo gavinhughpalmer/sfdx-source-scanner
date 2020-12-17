@@ -18,12 +18,13 @@ export class IncludesDescriptionRule extends Rule {
 // TODO Similar rule for IF(something, true, false)
 export class IncludesEqualsBooleanRule extends Rule {
     public severity = Severity.MINOR;
-    public errorMessage = 'The formula contains a comparison of a checkbox (boolean) to the keyword true or false, this is unnessisary as the boolean itself can be used';
+    public errorMessage =
+        'The formula contains a comparison of a checkbox (boolean) to the keyword true or false, this is unnessisary as the boolean itself can be used';
     private surroundingText: string;
 
     public constructor(surroundingText?: string) {
         super();
-        this.surroundingText = surroundingText || '<formula>{innerText}<\/formula>';
+        this.surroundingText = surroundingText || '<formula>{innerText}</formula>';
     }
 
     protected isViolated(metadata: Metadata): boolean {
@@ -61,7 +62,8 @@ export class SkipAutomationRule extends Rule {
 
 export class DeactivatedMetadataRule extends Rule {
     public severity = Severity.MODERATE;
-    public errorMessage = 'Deactivated metadata should not be included in source control, please consider removing from the source';
+    public errorMessage =
+        'Deactivated metadata should not be included in source control, please consider removing from the source';
     protected activeFlag: string;
     public constructor(activeFlag: string) {
         super();

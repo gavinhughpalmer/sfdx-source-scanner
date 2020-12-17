@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Severity } from '../../src/main/file-alert';
 import { Metadata } from '../../src/main/metadata-scanner';
-import { MetadataMock } from "./mocks";
+import { MetadataMock } from './mocks';
 import { Rule } from '../../src/main/rule';
 
 class MockRule extends Rule {
@@ -23,7 +23,7 @@ describe('Rule Class', () => {
     let mockFile = new MetadataMock(filePath);
     beforeEach(() => {
         mockRule = new MockRule();
-    })
+    });
     it('Should create a violation when enabled', () => {
         mockRule.isViolating = true;
         mockRule.enable();

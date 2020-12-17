@@ -1,7 +1,6 @@
 import { Metadata, MetadataScanner } from '../../src/main/metadata-scanner';
 
 export class MetadataMock extends Metadata {
-
     private mockedRawContents: string;
     private mockedParsedContents: object;
 
@@ -22,6 +21,4 @@ export class MetadataMock extends Metadata {
     }
 }
 
-export class MockMetadataScanner extends MetadataScanner {
-
-}
+export class MockMetadataScanner extends MetadataScanner {}

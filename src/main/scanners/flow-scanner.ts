@@ -1,17 +1,24 @@
 import { Severity } from '../file-alert';
 import { Metadata, MetadataScanner } from '../metadata-scanner';
 import { Rule, Violation } from '../rule';
-import { DeactivatedMetadataRule, IncludesDescriptionRule, IncludesEqualsBooleanRule, NamingConventionRule, SkipAutomationRule } from '../rules';
+import {
+    DeactivatedMetadataRule,
+    IncludesDescriptionRule,
+    IncludesEqualsBooleanRule,
+    NamingConventionRule,
+    SkipAutomationRule,
+} from '../rules';
 
 export default class FlowScanner extends MetadataScanner {
-
     protected metadataFilePattern = '*.flow-meta.xml';
     public constructor(baseDir: string) {
         super(baseDir);
         this.addRule(new ProcessBuilderNamingRule());
         this.addRule(new SingleProcessBuilderPerObjectRule());
         this.addRule(new IncludesDescriptionRule());
-        this.addRule(new IncludesEqualsBooleanRule('<formulas>[^]+<expression>{innerText}<\/expression>[^]+<\/formulas>'));
+        this.addRule(
+            new IncludesEqualsBooleanRule('<formulas>[^]+<expression>{innerText}</expression>[^]+</formulas>'),
+        );
         this.addRule(new SkipProcessBuilderRule());
         this.addRule(new DeactivatedMetadataRule('<status>Active</status>'));
         this.addRule(new NamingConventionRule(/[A-Z][a-zA-Z0-9_]*_Handler/));
@@ -19,7 +26,6 @@ export default class FlowScanner extends MetadataScanner {
 }
 
 abstract class ProcessBuilderRule extends Rule {
-
     public static isProcessBuilder(flowContents: string): boolean {
         return flowContents.includes('<processType>Workflow</processType>');
     }
@@ -45,7 +51,9 @@ class SingleProcessBuilderPerObjectRule extends ProcessBuilderRule {
     public errorMessage = 'There are multiple process builders for the objet';
     private processBuilderObjects = new Set();
     protected isViolated(metadata: Metadata): boolean {
-        const matches = metadata.getRawContents().match(/<name>ObjectType<\/name>\s*<value>\s*<stringValue>(\w*)<\/stringValue>/);
+        const matches = metadata
+            .getRawContents()
+            .match(/<name>ObjectType<\/name>\s*<value>\s*<stringValue>(\w*)<\/stringValue>/);
         if (matches && matches[1]) {
             const objectName = matches[1].toLowerCase();
             const alreadyHasProcessBuilder = this.processBuilderObjects.has(objectName);

@@ -5,7 +5,6 @@ import { Rule } from '../rule';
 
 // TODO Should each of these scanner classes be extending the metadata scanner or just accepting input as a constructor?
 export default class AnyFileScanner extends MetadataScanner {
-
     protected metadataFilePattern = '*.xml';
     public constructor(baseDir: string) {
         super(baseDir);

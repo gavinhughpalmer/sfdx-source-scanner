@@ -1,3 +1,10 @@
 {
-    "extends": "@salesforce/dev-config/tslint"
+    "extends": [
+        "tslint:recommended",
+        "tslint-eslint-rules",
+        "tslint-microsoft-contrib",
+        "tslint-consistent-codestyle",
+        "tslint-config-prettier",
+        "@salesforce/dev-config/tslint"
+    ]
 }

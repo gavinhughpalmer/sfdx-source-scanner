@@ -4,7 +4,6 @@ import { Rule } from '../rule';
 import { IncludesEqualsBooleanRule } from '../rules';
 
 export default class WorkflowScanner extends MetadataScanner {
-
     protected metadataFilePattern = '*.workflow-meta.xml';
     public constructor(baseDir: string) {
         super(baseDir);
@@ -88,7 +87,8 @@ function includesDescription(metadataObject: object): boolean {
 
 class WorkflowInactiveRule extends WorkflowRule {
     public severity = Severity.MODERATE;
-    public errorMessage = 'Deactivated metadata should not be included in source control, please consider removing from the source';
+    public errorMessage =
+        'Deactivated metadata should not be included in source control, please consider removing from the source';
     protected isViolated(metadata: Metadata): boolean {
         return metadata.getParsedContents()['active'] != 'true';
     }
@@ -97,7 +97,7 @@ class WorkflowInactiveRule extends WorkflowRule {
 class WorkflowBypassRule extends WorkflowRule {
     public severity = Severity.MODERATE;
     public errorMessage = 'The bypass workflow line should be included within the workflow rule';
-    public skipWorkflowLine = 'NOT($Setup.Configuration__c.Are_Workflows_Off__c)'
+    public skipWorkflowLine = 'NOT($Setup.Configuration__c.Are_Workflows_Off__c)';
     protected isViolated(metadata: Metadata): boolean {
         const ruleContents = metadata.getParsedContents();
         return ruleContents.hasOwnProperty('formula') && ruleContents['formula'].contains(this.skipWorkflowLine);

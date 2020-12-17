@@ -4,7 +4,7 @@ import { Metadata, MetadataError } from '../../src/main/metadata-scanner';
 
 describe('Metadata Class', () => {
     it('Should return the path directory', () => {
-        const aTestPath = 'this/is/my/test/path.txt'
+        const aTestPath = 'this/is/my/test/path.txt';
         const metadata = new Metadata(aTestPath);
         expect(metadata.getPath()).to.equal(aTestPath);
     });
@@ -20,9 +20,9 @@ describe('Metadata Class', () => {
         const metadata = new Metadata(path.join(__dirname, 'resources/testFile.xml'));
         expect(metadata.getParsedContents()).to.eql({
             TestObject: {
-                field1: "Value 1",
-                field2: "Test file contents"
-            }
+                field1: 'Value 1',
+                field2: 'Test file contents',
+            },
         });
     });
     it('Should return true for a managed package field', () => {
@@ -37,13 +37,7 @@ describe('Metadata Class', () => {
 
 describe('MetadataScanner class', () => {
     // TODO
-    it('Should include a rule when the include is called', () => {
-
-    });
-    it('Should exclude a rule when the exclude is called', () => {
-
-    });
-    it('Should ignore a file when it is added', () => {
-
-    });
+    it('Should include a rule when the include is called', () => {});
+    it('Should exclude a rule when the exclude is called', () => {});
+    it('Should ignore a file when it is added', () => {});
 });

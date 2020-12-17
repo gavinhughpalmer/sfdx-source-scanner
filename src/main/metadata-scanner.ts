@@ -64,7 +64,6 @@ export abstract class MetadataScanner {
 }
 
 export class Metadata {
-
     protected metadataFilePath: string;
     protected metadataContents: string;
     protected parsedMetadata: object;

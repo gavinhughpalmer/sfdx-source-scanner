@@ -3,10 +3,9 @@ import { FileAlert } from '../file-alert';
 import { MetadataScanner } from '../metadata-scanner';
 
 export class RuleSetManager {
-
     public static async getRuleSet(ruleSetPath: string): Promise<RuleSetManager> {
         const fileContents = await fs.readJson(ruleSetPath);
-        return new RuleSetManager(fileContents as unknown as RuleSet);
+        return new RuleSetManager((fileContents as unknown) as RuleSet);
     }
 
     private ruleSet: RuleSet;

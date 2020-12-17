@@ -1,7 +1,7 @@
 {
   "name": "sfdx-source-scanner",
   "description": "This package will scan salesforce metadata files to validate for certain rules",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "author": "Gavin Palmer",
   "bugs": "https://github.com/gavinhughpalmer/sfdx-source-scanner/issues",
   "dependencies": {

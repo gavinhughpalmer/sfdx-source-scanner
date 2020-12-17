@@ -24,6 +24,7 @@ class IsValidXMLRule extends Rule {
             this.lineNumber = xmlValidationResult.err.line;
             this.violationLine = xmlValidationResult.err.msg;
         }
+
         return xmlValidationResult !== true;
     }
 }
@@ -36,8 +37,10 @@ class ContainsIdRule extends Rule {
         const idMatches = metadata.getRawContents().match(/[^0-9a-zA-Z<]([0-9a-zA-Z]{18})[^0-9a-zA-Z>]/);
         if (idMatches) {
             const potentialId = idMatches[1];
+
             return /\d/.test(potentialId);
         }
+
         return false;
     }
 }

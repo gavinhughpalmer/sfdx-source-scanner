@@ -11,6 +11,7 @@ export class IncludesDescriptionRule extends Rule {
         if (!metadata.isManagedMetadata() && !desctiptionMatch) {
             isViolated = true;
         }
+
         return isViolated;
     }
 }
@@ -20,7 +21,7 @@ export class IncludesEqualsBooleanRule extends Rule {
     public severity = Severity.MINOR;
     public errorMessage =
         'The formula contains a comparison of a checkbox (boolean) to the keyword true or false, this is unnessisary as the boolean itself can be used';
-    private surroundingText: string;
+    private readonly surroundingText: string;
 
     public constructor(surroundingText?: string) {
         super();
@@ -33,6 +34,7 @@ export class IncludesEqualsBooleanRule extends Rule {
             this.lineNumber = equalsBooleanMatch.index;
             this.violationLine = equalsBooleanMatch[1];
         }
+
         return !!equalsBooleanMatch;
     }
 
@@ -87,6 +89,7 @@ export class NamingConventionRule extends Rule {
         const lastPathDeliiter = metadata.getPath().lastIndexOf('/') + 1;
         const startOfExtension = metadata.getPath().indexOf('.'); // Could strip based of the metadata file pattern
         const fileName = metadata.getPath().substring(lastPathDeliiter, startOfExtension);
+
         return !this.namingPattern.test(fileName);
     }
 }

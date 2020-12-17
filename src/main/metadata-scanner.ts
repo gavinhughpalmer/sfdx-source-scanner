@@ -7,11 +7,11 @@ import { Rule, Violation } from './rule';
 export abstract class MetadataScanner {
     protected metadataFilePattern: string;
     protected rules: Rule[];
-    private rulesMap: Map<string, Rule> = new Map();
+    private readonly rulesMap: Map<string, Rule> = new Map();
     private ignoredFiles: string[];
-    private alerts: FileAlert[] = [];
+    private readonly alerts: FileAlert[] = [];
 
-    private baseDir: string;
+    private readonly baseDir: string;
 
     public constructor(baseDir: string) {
         this.baseDir = baseDir;
@@ -28,6 +28,7 @@ export abstract class MetadataScanner {
                 this.scanMetadata(rule, metadataFile);
             }
         }
+
         return this.alerts;
     }
 
@@ -83,6 +84,7 @@ export class Metadata {
         if (!this.metadataContents) {
             this.metadataContents = fs.readFileSync(this.metadataFilePath, 'utf8');
         }
+
         return this.metadataContents;
     }
 
@@ -90,6 +92,7 @@ export class Metadata {
         if (!this.parsedMetadata) {
             this.parsedMetadata = parseXml(this.getRawContents());
         }
+
         return this.parsedMetadata;
     }
 

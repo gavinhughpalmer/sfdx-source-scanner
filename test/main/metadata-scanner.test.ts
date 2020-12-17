@@ -21,8 +21,8 @@ describe('Metadata Class', () => {
         expect(metadata.getParsedContents()).to.eql({
             TestObject: {
                 field1: 'Value 1',
-                field2: 'Test file contents',
-            },
+                field2: 'Test file contents'
+            }
         });
     });
     it('Should return true for a managed package field', () => {

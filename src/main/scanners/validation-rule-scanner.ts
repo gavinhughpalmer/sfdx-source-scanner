@@ -3,7 +3,7 @@ import {
     DeactivatedMetadataRule,
     IncludesDescriptionRule,
     IncludesEqualsBooleanRule,
-    SkipAutomationRule,
+    SkipAutomationRule
 } from '../rules';
 
 export default class ValidationRuleScanner extends MetadataScanner {

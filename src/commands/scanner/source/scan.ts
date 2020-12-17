@@ -12,7 +12,7 @@ export default class Scan extends SfdxCommand {
     public static examples = [
         `$ sfdx config:scan --targetdir force-app --errorlevel 2
     Errors in the files have been identified
-  `,
+  `
     ];
 
     public static args = [{ name: 'file' }];
@@ -23,14 +23,14 @@ export default class Scan extends SfdxCommand {
         rulesetfile: flags.string({
             char: 's',
             description: messages.getMessage('ruleSetFileDescription'),
-            required: true,
+            required: true
         }),
         targetdir: flags.string({
             char: 'd',
             description: messages.getMessage('targetDirectoryDescription'),
-            default: 'force-app',
+            default: 'force-app'
         }),
-        errorlevel: flags.number({ char: 'e', description: messages.getMessage('errorLevelDescription'), default: 3 }),
+        errorlevel: flags.number({ char: 'e', description: messages.getMessage('errorLevelDescription'), default: 3 })
     };
 
     protected static requiresUsername = false;
@@ -38,24 +38,25 @@ export default class Scan extends SfdxCommand {
     protected static requiresProject = true;
 
     public async run(): Promise<FileAlert[]> {
-        const targetDir = this.flags.targetdir;
-        const errorLevel = this.flags.errorlevel;
+        const targetDir = this.flags.targetdir as string;
+        const errorLevel = this.flags.errorlevel as number;
         if (errorLevel < 1 || errorLevel > 5) {
             throw new SfdxError(
-                'The provided error level sits outside the severity range, enter a number between 1 and 5',
+                'The provided error level sits outside the severity range, enter a number between 1 and 5'
             );
         }
-        const ruleSetManager = await RuleSetManager.getRuleSet(this.flags.rulesetfile);
+        const ruleSetManager = await RuleSetManager.getRuleSet(this.flags.rulesetfile as string);
         let fileViolations = await ruleSetManager.runRuleSet(targetDir);
         fileViolations = this.flatten(fileViolations);
         const violationErrors = fileViolations.filter((violation) => violation.severity >= errorLevel);
-        if (violationErrors) {
+        if (!!violationErrors) {
             violationErrors.forEach((violation) => this.ux.error(violation));
             throw new SfdxError('Errors in the files have been identified');
         }
         if (this.flags.resultsfile) {
-            await fs.writeJson(this.flags.resultsfile, JSON.stringify(fileViolations));
+            await fs.writeJson(this.flags.resultsfile as string, JSON.stringify(fileViolations));
         }
+
         return fileViolations;
     }
 

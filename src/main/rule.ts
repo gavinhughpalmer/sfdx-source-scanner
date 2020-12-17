@@ -14,6 +14,7 @@ export abstract class Rule {
         if (this.ignoredFiles.has(metadata.getPath()) || !this.enabled) {
             return [];
         }
+
         return this.scanOverride(metadata);
     }
     public ignoreFiles(ignoredFiles: string[]) {
@@ -29,6 +30,7 @@ export abstract class Rule {
         if (this.isViolated(metadata)) {
             return [this.createViolation()];
         }
+
         return [];
     }
     protected abstract isViolated(metadata: Metadata): boolean;
@@ -37,7 +39,7 @@ export abstract class Rule {
             lineNumber: this.lineNumber,
             errorMessage: this.errorMessage,
             severity: this.severity,
-            violationLine: this.violationLine,
+            violationLine: this.violationLine
         };
     }
 }

@@ -3,15 +3,15 @@ import { FileAlert } from '../file-alert';
 import { MetadataScanner } from '../metadata-scanner';
 
 export class RuleSetManager {
-    public static async getRuleSet(ruleSetPath: string): Promise<RuleSetManager> {
-        const fileContents = await fs.readJson(ruleSetPath);
-        return new RuleSetManager((fileContents as unknown) as RuleSet);
-    }
-
-    private ruleSet: RuleSet;
+    private readonly ruleSet: RuleSet;
 
     private constructor(ruleSet: RuleSet) {
         this.ruleSet = ruleSet;
+    }
+    public static async getRuleSet(ruleSetPath: string): Promise<RuleSetManager> {
+        const fileContents = await fs.readJson(ruleSetPath);
+
+        return new RuleSetManager((fileContents as unknown) as RuleSet);
     }
 
     public async runRuleSet(targetDir: string): Promise<FileAlert[]> {
@@ -20,7 +20,8 @@ export class RuleSetManager {
             const scannerInstance = await this.createScanner(scannerConfig, targetDir);
             scanJobs.push(scannerInstance.run());
         }
-        return await Promise.all(scanJobs);
+
+        return Promise.all(scanJobs);
     }
 
     private async createScanner(scannerConfig: ScannerConfig, targetDir: string): Promise<MetadataScanner> {
@@ -31,6 +32,7 @@ export class RuleSetManager {
             for (const excludedRules of scannerConfig.exclude) {
                 scannerInstance.excludeRule(excludedRules);
             }
+
             return scannerInstance;
         }
         if (scannerConfig.ignore) {
@@ -41,6 +43,7 @@ export class RuleSetManager {
                 this.enableRule(scannerInstance, includedRule);
             }
         }
+
         return scannerInstance;
     }
 

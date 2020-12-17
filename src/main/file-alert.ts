@@ -9,5 +9,5 @@ export enum Severity {
     LOW,
     MODERATE,
     HIGH,
-    EXTREME,
+    EXTREME
 }

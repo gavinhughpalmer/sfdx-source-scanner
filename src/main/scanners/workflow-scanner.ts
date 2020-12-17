@@ -16,9 +16,9 @@ export default class WorkflowScanner extends MetadataScanner {
     }
 
     public scanMetadata(rule: Rule, metadata: Metadata): void {
-        const childMetadata: WorkflowMetadata[] = this.getChildMetadata(rule, metadata);
-        for (const metadata of childMetadata) {
-            super.scanMetadata(rule, metadata);
+        const workflowChildrenMetadata: WorkflowMetadata[] = this.getChildMetadata(rule, metadata);
+        for (const childMetadata of workflowChildrenMetadata) {
+            super.scanMetadata(rule, childMetadata);
         }
     }
 
@@ -29,10 +29,12 @@ export default class WorkflowScanner extends MetadataScanner {
         if (ruleType === '') {
             childMetadata.push(parentMetadata);
         } else {
-            for (const contents of workflow[ruleType]) {
+            const childContents: object[] = workflow[ruleType] as object[];
+            for (const contents of childContents) {
                 childMetadata.push(new WorkflowMetadata(parentMetadata, contents));
             }
         }
+
         return childMetadata;
     }
 
@@ -90,7 +92,7 @@ class WorkflowInactiveRule extends WorkflowRule {
     public errorMessage =
         'Deactivated metadata should not be included in source control, please consider removing from the source';
     protected isViolated(metadata: Metadata): boolean {
-        return metadata.getParsedContents()['active'] != 'true';
+        return metadata.getParsedContents()['active'] !== 'true';
     }
 }
 
@@ -100,7 +102,11 @@ class WorkflowBypassRule extends WorkflowRule {
     public skipWorkflowLine = 'NOT($Setup.Configuration__c.Are_Workflows_Off__c)';
     protected isViolated(metadata: Metadata): boolean {
         const ruleContents = metadata.getParsedContents();
-        return ruleContents.hasOwnProperty('formula') && ruleContents['formula'].contains(this.skipWorkflowLine);
+
+        return (
+            ruleContents.hasOwnProperty('formula') &&
+            (ruleContents['formula'] as string).includes(this.skipWorkflowLine)
+        );
     }
 }
 

@@ -6,7 +6,7 @@ import {
     IncludesDescriptionRule,
     IncludesEqualsBooleanRule,
     NamingConventionRule,
-    SkipAutomationRule,
+    SkipAutomationRule
 } from '../rules';
 
 export default class FlowScanner extends MetadataScanner {
@@ -17,7 +17,7 @@ export default class FlowScanner extends MetadataScanner {
         this.addRule(new SingleProcessBuilderPerObjectRule());
         this.addRule(new IncludesDescriptionRule());
         this.addRule(
-            new IncludesEqualsBooleanRule('<formulas>[^]+<expression>{innerText}</expression>[^]+</formulas>'),
+            new IncludesEqualsBooleanRule('<formulas>[^]+<expression>{innerText}</expression>[^]+</formulas>')
         );
         this.addRule(new SkipProcessBuilderRule());
         this.addRule(new DeactivatedMetadataRule('<status>Active</status>'));
@@ -34,6 +34,7 @@ abstract class ProcessBuilderRule extends Rule {
         if (!ProcessBuilderRule.isProcessBuilder(metadata.getRawContents())) {
             return [];
         }
+
         return super.scanOverride(metadata);
     }
 }
@@ -49,7 +50,7 @@ class ProcessBuilderNamingRule extends ProcessBuilderRule {
 class SingleProcessBuilderPerObjectRule extends ProcessBuilderRule {
     public severity = Severity.HIGH;
     public errorMessage = 'There are multiple process builders for the objet';
-    private processBuilderObjects = new Set();
+    private readonly processBuilderObjects = new Set();
     protected isViolated(metadata: Metadata): boolean {
         const matches = metadata
             .getRawContents()
@@ -58,8 +59,10 @@ class SingleProcessBuilderPerObjectRule extends ProcessBuilderRule {
             const objectName = matches[1].toLowerCase();
             const alreadyHasProcessBuilder = this.processBuilderObjects.has(objectName);
             this.processBuilderObjects.add(objectName);
+
             return alreadyHasProcessBuilder;
         }
+
         return true;
     }
 }

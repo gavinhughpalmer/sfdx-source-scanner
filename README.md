@@ -1,13 +1,14 @@
 sfdx-source-scanner
 =========================
 
+**This product is in beta, please use with caution. Any feedback on the functionality or contributions are welcomed.**
 The source scanner will run static analysis on Salesforce source to ensure both best practices and potential errors are avoided. The scanner is configurable, this will allow you to define the rules that are executed, any files that you wish to ignore rules on, the severity of each rule and any specific error messages that should be output when a rule is violated.
 
 [![Version](https://img.shields.io/npm/v/sfdx-source-scanner.svg)](https://npmjs.org/package/sfdx-source-scanner)
 [![CircleCI](https://circleci.com/gh/gavinhughpalmer/sfdx-source-scanner/tree/master.svg?style=shield)](https://circleci.com/gh/gavinhughpalmer/sfdx-source-scanner/tree/master)
 [![Known Vulnerabilities](https://snyk.io/test/github/gavinhughpalmer/sfdx-source-scanner/badge.svg)](https://snyk.io/test/github/gavinhughpalmer/sfdx-source-scanner)
 [![Downloads/week](https://img.shields.io/npm/dw/sfdx-source-scanner.svg)](https://npmjs.org/package/sfdx-source-scanner)
-[![License](https://img.shields.io/npm/l/sfdx-source-scanner.svg)](https://github.com/gavinhughpalmer/sfdx-source-scanner/blob/master/package.json)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <!-- toc -->
 * [Installation](#installation)
@@ -62,7 +63,7 @@ This utility will scan salesforce metadata (in source format) to identify any po
 
 ```
 USAGE
-  $ sfdx scanner:source:scan -s <string> [-r <string>] [-d <string>] [-e <number>] [--json] [--loglevel
+  $ sfdx scanner:source:scan -s <string> [-r <string>] [-d <string>] [-e <number>] [--json] [--loglevel 
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS

@@ -26,7 +26,6 @@ describe('Rule Class', () => {
     });
     it('Should create a violation when enabled', () => {
         mockRule.isViolating = true;
-        mockRule.enable();
         expect(mockRule.scan(mockFile).length).to.equal(1);
     });
     it('Should not create a violation', () => {

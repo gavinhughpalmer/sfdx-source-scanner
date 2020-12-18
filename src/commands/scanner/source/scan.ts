@@ -54,8 +54,8 @@ export default class Scan extends SfdxCommand {
         } else {
             fileViolations.forEach(violation => this.ux.error(violation));
         }
-        const hasErrors = fileViolations.reduce((hasErrors, violation) => violation.severity >= errorLevel || hasErrors, false);
-        if (hasErrors) {
+        const hasFileErrors = fileViolations.reduce((hasErrors, violation) => violation.severity >= errorLevel || hasErrors, false);
+        if (hasFileErrors) {
             throw new SfdxError('Errors in the files have been identified');
         }
         return fileViolations;

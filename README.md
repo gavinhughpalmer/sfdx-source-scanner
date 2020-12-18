@@ -16,7 +16,7 @@ The source scanner will run static analysis on Salesforce source to ensure both 
 * [Usage](#usage)
 * [Rule Sets](#rule-sets)
 * [Rule Refrence](#rule-refrence)
-* [Debugging your plugin](#debugging-your-plugin)
+* [Contributing](#contributing)
 <!-- tocstop -->
 
 
@@ -64,7 +64,7 @@ This utility will scan salesforce metadata (in source format) to identify any po
 
 ```
 USAGE
-  $ sfdx scanner:source:scan -s <string> [-r <string>] [-d <string>] [-e <number>] [--json] [--loglevel
+  $ sfdx scanner:source:scan -s <string> [-r <string>] [-d <string>] [-e <number>] [--json] [--loglevel 
   trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
 
 OPTIONS
@@ -79,7 +79,9 @@ OPTIONS
                                                                                     where 1 is Minor and 5 is Extreme
 
   -r, --resultsfile=resultsfile                                                     The path to the file that the
-                                                                                    results should be written to
+                                                                                    results should be written to, if
+                                                                                    this is not provided this will be
+                                                                                    output to the terminal
 
   -s, --rulesetfile=rulesetfile                                                     (required) The file path for the
                                                                                     rule set that should be applied
@@ -90,11 +92,11 @@ OPTIONS
                                                                                     this command invocation
 
 EXAMPLE
-  $ sfdx config:scan --targetdir force-app --errorlevel 2
+  $ sfdx config:scan --rulesetfile sfdx-config-rule-set.json --targetdir force-app --errorlevel 2
        Errors in the files have been identified
 ```
 
-_See code: [lib/commands/scanner/source/scan.js](https://github.com/gavinhughpalmer/sfdx-source-scanner/blob/v0.0.1/lib/commands/scanner/source/scan.js)_
+_See code: [lib/commands/scanner/source/scan.js](https://github.com/gavinhughpalmer/sfdx-source-scanner/blob/v0.0.2/lib/commands/scanner/source/scan.js)_
 <!-- commandsstop -->
 
 # Rule Sets

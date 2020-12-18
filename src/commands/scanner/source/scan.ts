@@ -48,15 +48,16 @@ export default class Scan extends SfdxCommand {
         const ruleSetManager = await RuleSetManager.getRuleSet(this.flags.rulesetfile as string);
         let fileViolations = await ruleSetManager.runRuleSet(targetDir);
         fileViolations = this.flatten(fileViolations);
-        const violationErrors = fileViolations.filter(violation => violation.severity >= errorLevel);
-        if (!!violationErrors) {
-            violationErrors.forEach(violation => this.ux.error(violation));
+        if (!!this.flags.resultsfile) {
+            // Could use the writeJson, if I can find a way to convert the fileViolations into an AnyJson type
+            await fs.writeFile(this.flags.resultsfile as string, JSON.stringify(fileViolations, null, 2));
+        } else {
+            fileViolations.forEach(violation => this.ux.error(violation));
+        }
+        const hasErrors = fileViolations.reduce((hasErrors, violation) => violation.severity >= errorLevel || hasErrors, false);
+        if (hasErrors) {
             throw new SfdxError('Errors in the files have been identified');
         }
-        if (this.flags.resultsfile) {
-            await fs.writeJson(this.flags.resultsfile as string, JSON.stringify(fileViolations));
-        }
-
         return fileViolations;
     }
 

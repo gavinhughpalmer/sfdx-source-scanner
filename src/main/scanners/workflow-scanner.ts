@@ -23,33 +23,33 @@ export default class WorkflowScanner extends MetadataScanner {
     }
 
     private getChildMetadata(rule: Rule, parentMetadata: Metadata): Metadata[] {
-        const workflow = parentMetadata.getParsedContents();
+        const workflow = parentMetadata.getParsedContents()['Workflow'];
         const childMetadata: WorkflowMetadata[] = [];
         const ruleType = this.getRuleType(rule);
         if (ruleType === '') {
             childMetadata.push(parentMetadata);
         } else {
-            const childContents: object[] = workflow[ruleType] as object[];
-            for (const contents of childContents) {
-                childMetadata.push(new WorkflowMetadata(parentMetadata, contents));
+            const childContents: object[] | object = workflow[ruleType] as object[];
+            if (Array.isArray(childContents)) {
+                for (const contents of childContents) {
+                    childMetadata.push(new WorkflowMetadata(parentMetadata, contents));
+                }
+            } else if (!!childContents) {
+                childMetadata.push(new WorkflowMetadata(parentMetadata, childContents));
             }
         }
-
         return childMetadata;
     }
 
     private getRuleType(rule: Rule): string {
-        switch (rule.constructor) {
-            case WorkflowRule:
-                return 'rules';
-            case EmailAlertRule:
-                return 'alerts';
-            case FieldUpdateRule:
-                return 'fieldUpdates';
-            default:
-                // No child type found
-                return '';
+        if (rule instanceof WorkflowRule) {
+            return 'rules';
+        } else if (rule instanceof EmailAlertRule) {
+            return 'alerts';
+        } else if (rule instanceof FieldUpdateRule) {
+            return 'fieldUpdates';
         }
+        return '';
     }
 }
 
@@ -92,7 +92,7 @@ class WorkflowInactiveRule extends WorkflowRule {
     public errorMessage =
         'Deactivated metadata should not be included in source control, please consider removing from the source';
     protected isViolated(metadata: Metadata): boolean {
-        return metadata.getParsedContents()['active'] !== 'true';
+        return !metadata.getParsedContents()['active'];
     }
 }
 
@@ -102,10 +102,9 @@ class WorkflowBypassRule extends WorkflowRule {
     public skipWorkflowLine = 'NOT($Setup.Configuration__c.Are_Workflows_Off__c)';
     protected isViolated(metadata: Metadata): boolean {
         const ruleContents = metadata.getParsedContents();
-
         return (
-            ruleContents.hasOwnProperty('formula') &&
-            (ruleContents['formula'] as string).includes(this.skipWorkflowLine)
+            !ruleContents.hasOwnProperty('formula') ||
+            !(ruleContents['formula'] as string).includes(this.skipWorkflowLine)
         );
     }
 }
@@ -118,5 +117,4 @@ class WorkflowMetadata extends Metadata {
     }
 }
 
-// TODO need to figure out how to include the breakdown of workflow rules, then include:
-//  * bypass metadata
+// TODO include a rule to error for empty workflow files

@@ -90,7 +90,7 @@ export class NamingConventionRule extends Rule {
         const startOfExtension = metadata.getPath().indexOf('.'); // Could strip based of the metadata file pattern
         const fileName = metadata.getPath().substring(lastPathDeliiter, startOfExtension);
 
-        return !this.namingPattern.test(fileName);
+        return !metadata.isManagedMetadata() && !this.namingPattern.test(fileName);
     }
 }
 

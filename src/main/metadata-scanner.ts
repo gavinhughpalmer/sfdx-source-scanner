@@ -36,10 +36,6 @@ export abstract class MetadataScanner {
         this.rulesMap.get(ruleName).disable();
     }
 
-    public includeRule(ruleName: string): void {
-        this.rulesMap.get(ruleName).enable();
-    }
-
     public ignoreFiles(ignoredFiles: string[]): void {
         this.ignoredFiles = ignoredFiles;
     }
@@ -97,6 +93,7 @@ export class Metadata {
     }
 
     public isManagedMetadata(): boolean {
+        // TODO Match on the mtadata name (ie remove the rest of the path and the extension)
         return !!this.metadataFilePath.match(/[\w\d]+__[\w\d]+__c.\w+-meta\.xml/);
     }
 }

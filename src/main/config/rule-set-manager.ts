@@ -3,6 +3,7 @@ import { FileAlert } from '../file-alert';
 import { MetadataScanner } from '../metadata-scanner';
 
 export class RuleSetManager {
+    // TODO consider adding types for the JSON files to ensure people are composing them correctly.
     private readonly ruleSet: RuleSet;
 
     private constructor(ruleSet: RuleSet) {
@@ -32,8 +33,6 @@ export class RuleSetManager {
             for (const excludedRules of scannerConfig.exclude) {
                 scannerInstance.excludeRule(excludedRules);
             }
-
-            return scannerInstance;
         }
         if (scannerConfig.ignore) {
             scannerInstance.ignoreFiles(scannerConfig.ignore);
@@ -43,15 +42,14 @@ export class RuleSetManager {
                 this.enableRule(scannerInstance, includedRule);
             }
         }
-
         return scannerInstance;
     }
 
     private enableRule(scannerInstance: MetadataScanner, includedRule: RuleConfig): void {
-        scannerInstance.includeRule(includedRule.name);
         const rule = scannerInstance.getRule(includedRule.name);
         rule.severity = includedRule.severity || rule.severity;
         rule.errorMessage = includedRule.errorMessage || rule.errorMessage;
+        rule.ignoreFiles(includedRule.ignore);
         if (includedRule.properties) {
             for (const property of includedRule.properties) {
                 rule[property.name] = property.value;

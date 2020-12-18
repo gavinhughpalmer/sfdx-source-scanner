@@ -5,7 +5,6 @@ import {
     DeactivatedMetadataRule,
     IncludesDescriptionRule,
     IncludesEqualsBooleanRule,
-    NamingConventionRule,
     SkipAutomationRule
 } from '../rules';
 
@@ -21,7 +20,6 @@ export default class FlowScanner extends MetadataScanner {
         );
         this.addRule(new SkipProcessBuilderRule());
         this.addRule(new DeactivatedMetadataRule('<status>Active</status>'));
-        this.addRule(new NamingConventionRule(/[A-Z][a-zA-Z0-9_]*_Handler/));
     }
 }
 
@@ -39,6 +37,7 @@ abstract class ProcessBuilderRule extends Rule {
     }
 }
 
+// TODO with the naming convention rule as a seperate one, how can we inject the PB functionality as well...
 class ProcessBuilderNamingRule extends ProcessBuilderRule {
     public severity = Severity.MODERATE;
     public errorMessage = 'The process builder does not follow the naming convention';

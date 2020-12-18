@@ -111,7 +111,7 @@ Scanner objects, the scanner objects define the scanners that should be running 
 The name describes the name of the scanner to be included, this can be found below (it is the name of the js module), the list is provided below in the [Rule Refrence](#rule-refrence).
 
 ## include
-The include accepts an array of objects that describes the rules that should be included, details of what should be provided in here is described below.
+The include accepts an array of objects that describes the rules that should be included and how they should be configured, details of what should be provided in here is described below. Any rules that are not in the include will still be included, unless specifically called out in the exclude attribute.
 The fields under include are name, severity, errorMessage, ignore and properties
 
 ### name

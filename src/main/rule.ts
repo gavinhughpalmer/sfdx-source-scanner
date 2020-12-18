@@ -20,9 +20,6 @@ export abstract class Rule {
     public ignoreFiles(ignoredFiles: string[]) {
         this.ignoredFiles = new Set(ignoredFiles);
     }
-    public enable(): void {
-        this.enabled = true;
-    }
     public disable(): void {
         this.enabled = false;
     }

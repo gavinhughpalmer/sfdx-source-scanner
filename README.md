@@ -96,7 +96,7 @@ EXAMPLE
        Errors in the files have been identified
 ```
 
-_See code: [lib/commands/scanner/source/scan.js](https://github.com/gavinhughpalmer/sfdx-source-scanner/blob/v0.0.4/lib/commands/scanner/source/scan.js)_
+_See code: [lib/commands/scanner/source/scan.js](https://github.com/gavinhughpalmer/sfdx-source-scanner/blob/v0.0.5/lib/commands/scanner/source/scan.js)_
 <!-- commandsstop -->
 
 # Rule Sets

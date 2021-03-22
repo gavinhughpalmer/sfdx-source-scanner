@@ -23,7 +23,7 @@
     "@types/mocha": "5.2.7",
     "@types/node": "10.17.55",
     "chai": "4.3.4",
-    "globby": "11.0.2",
+    "globby": "11.0.3",
     "mocha": "5.2.0",
     "nyc": "15.1.0",
     "prettier": "2.2.1",

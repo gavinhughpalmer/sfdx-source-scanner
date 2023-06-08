@@ -11,7 +11,7 @@
     "@salesforce/command": "4.0.4",
     "@salesforce/core": "2.27.0",
     "fast-glob": "3.2.7",
-    "fast-xml-parser": "3.21.1",
+    "fast-xml-parser": "4.2.4",
     "tslib": "2.3.1"
   },
   "devDependencies": {

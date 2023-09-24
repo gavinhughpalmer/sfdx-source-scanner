@@ -17,7 +17,7 @@
   "devDependencies": {
     "@oclif/dev-cli": "1.26.10",
     "@oclif/plugin-help": "3.3.1",
-    "@oclif/test": "1.2.9",
+    "@oclif/test": "2.5.6",
     "@salesforce/dev-config": "1.6.0",
     "@types/chai": "4.3.4",
     "@types/mocha": "8.2.3",
